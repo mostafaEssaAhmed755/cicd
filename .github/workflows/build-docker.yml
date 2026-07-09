@@ -26,6 +26,9 @@ jobs:
             - name: Checkout Repository
               uses: actions/checkout@v4
 
+            - name: Convert repository owner to lowercase
+              run: echo "OWNER_LC=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
             - name: Login to GHCR
               uses: docker/login-action@v3
               with:
