@@ -1,0 +1,23 @@
+name: Build Docker Image
+
+on:
+    pull_request:
+        paths:
+            - 'docker/php/**'
+            - 'docker/nginx/**'
+            - 'docker-compose.yml'
+
+    push:
+        branches:
+            - main
+        paths:
+            - 'docker/php/**'
+            - 'docker/nginx/**'
+            - 'docker-compose.yml'
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
