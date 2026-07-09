@@ -45,4 +45,4 @@ jobs:
                 context: .
                 file: docker/php/Dockerfile
                 push: ${{ github.event_name == 'push' }}
-                tags: ghcr.io/${{ github.repository_owner }}/cicd:latest
+                tags: ghcr.io/${{ env.OWNER_LC }}/cicd:latest
