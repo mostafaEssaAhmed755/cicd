@@ -7,7 +7,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('test-queue', function() {
+Route::get('test-queue', function () {
     SendWelcomeJob::dispatch();
-    return "done";
+
+    return 'done';
 });

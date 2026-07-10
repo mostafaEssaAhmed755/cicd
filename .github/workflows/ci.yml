@@ -35,12 +35,12 @@ jobs:
 
       - name: Laravel Pint
         working-directory: src
-        run: ./vendor/bin/pint --test
+        run: composer pint -- --test
 
       - name: PHPStan
         working-directory: src
-        run: ./vendor/bin/phpstan analyse
+        run: composer phpstan
 
       - name: PHPUnit
         working-directory: src
-        run: php artisan test
+        run: composer test
