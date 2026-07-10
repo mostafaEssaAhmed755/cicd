@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/mostafaessaahmed755/cicd:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        working-directory: src
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Prepare Environment
+        working-directory: src
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Laravel Pint
+        working-directory: src
+        run: ./vendor/bin/pint --test
+
+      - name: PHPStan
+        working-directory: src
+        run: ./vendor/bin/phpstan analyse
+
+      - name: PHPUnit
+        working-directory: src
+        run: php artisan test
