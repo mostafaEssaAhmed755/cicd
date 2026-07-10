@@ -11,6 +11,8 @@ class ExampleTest extends TestCase
      */
     public function test_that_true_is_true(): void
     {
-        $this->assertTrue(true);
+        $string = 'Laravel 12';
+
+        $this->assertTrue(str_contains($string, 'Laravel'));
     }
 }
