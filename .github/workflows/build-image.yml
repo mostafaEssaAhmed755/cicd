@@ -43,6 +43,6 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                 context: .
-                file: docker/php/Dockerfile
+                file: docker/php/Dockerfile.prod
                 push: ${{ github.event_name == 'push' }}
                 tags: ghcr.io/${{ env.OWNER_LC }}/cicd:latest

@@ -1,0 +1,70 @@
+services:
+  app:
+    image: ghcr.io/mostafaessaahmed755/cicd:latest
+    container_name: cicd_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    networks:
+      - laravel
+
+  worker:
+    image: ghcr.io/mostafaessaahmed755/cicd:latest
+    container_name: cicd_worker
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan queue:work
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+  scheduler:
+    image: ghcr.io/mostafaessaahmed755/cicd:latest
+    container_name: cicd_scheduler
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan schedule:work
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+  nginx:
+    image: nginx:alpine
+    container_name: cicd_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+  mysql:
+    image: mysql:8
+    container_name: cicd_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: cicd
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - laravel
+
+  redis:
+    image: redis:alpine
+    container_name: cicd_redis
+    restart: unless-stopped
+    networks:
+      - laravel
+
+networks:
+  laravel:
+
+volumes:
+  mysql_data:
