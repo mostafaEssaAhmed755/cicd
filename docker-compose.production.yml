@@ -4,6 +4,8 @@ services:
     container_name: cicd_app
     restart: unless-stopped
     working_dir: /var/www/html
+    volumes:
+      - ./src/.env:/var/www/html/.env:ro
     networks:
       - laravel
 
