@@ -84,5 +84,10 @@ jobs:
           docker compose -f docker-compose.production.yml down
           docker compose -f docker-compose.production.yml up -d
 
+          echo "Waiting for MySQL..."
+          until [ "$(docker inspect -f '{{.State.Health.Status}}' cicd_mysql)" = "healthy" ]; do
+            sleep 5
+          done
+
           docker compose -f docker-compose.production.yml exec -T app php artisan migrate --force
           docker compose -f docker-compose.production.yml exec -T app php artisan optimize
