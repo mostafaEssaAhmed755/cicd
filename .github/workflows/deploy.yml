@@ -84,6 +84,5 @@ jobs:
           docker compose -f docker-compose.production.yml down
           docker compose -f docker-compose.production.yml up -d
 
-          docker compose -f docker-compose.production.yml exec -T app php artisan key:generate --force
           docker compose -f docker-compose.production.yml exec -T app php artisan migrate --force
           docker compose -f docker-compose.production.yml exec -T app php artisan optimize
