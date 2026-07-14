@@ -7,17 +7,17 @@ permissions:
 on:
     pull_request:
         paths:
-            - 'docker/php/**'
-            - 'docker/nginx/**'
-            - 'docker-compose.yml'
+          - 'src/**'
+          - 'docker/**'
+          - 'docker-compose.yml'
 
     push:
         branches:
             - main
         paths:
-            - 'docker/php/**'
-            - 'docker/nginx/**'
-            - 'docker-compose.yml'
+          - 'src/**'
+          - 'docker/**'
+          - 'docker-compose.yml'
 jobs:
     build:
         runs-on: ubuntu-latest
