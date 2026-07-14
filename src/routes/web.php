@@ -12,3 +12,7 @@ Route::get('test-queue', function () {
 
     return 'done';
 });
+
+Route::get('new', function () {
+    return 'new';
+});
