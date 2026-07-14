@@ -13,6 +13,6 @@ Route::get('test-queue', function () {
     return 'done';
 });
 
-Route::get('new', function () {
-    return 'new';
+Route::get('link-1', function () {
+    return 'Link1';
 });

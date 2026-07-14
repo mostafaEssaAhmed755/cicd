@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/mostafaessaahmed755/cicd:latest
+    image: ghcr.io/mostafaessaahmed755/cicd:${IMAGE_TAG:-latest}
     container_name: cicd_app
     restart: unless-stopped
     working_dir: /var/www/html
@@ -10,7 +10,7 @@ services:
       - laravel
 
   worker:
-    image: ghcr.io/mostafaessaahmed755/cicd:latest
+    image: ghcr.io/mostafaessaahmed755/cicd:${IMAGE_TAG:-latest}
     container_name: cicd_worker
     restart: unless-stopped
     working_dir: /var/www/html
@@ -23,7 +23,7 @@ services:
       - laravel
 
   scheduler:
-    image: ghcr.io/mostafaessaahmed755/cicd:latest
+    image: ghcr.io/mostafaessaahmed755/cicd:${IMAGE_TAG:-latest}
     container_name: cicd_scheduler
     restart: unless-stopped
     working_dir: /var/www/html

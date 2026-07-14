@@ -82,6 +82,9 @@ jobs:
           VITE_APP_NAME=${{ secrets.VITE_APP_NAME }}
           EOF
 
+      - name: Set image tag
+        run: echo "IMAGE_TAG=sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Deploy
         run: |
           docker compose -f docker-compose.production.yml pull
