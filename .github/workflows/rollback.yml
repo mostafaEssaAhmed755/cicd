@@ -1,0 +1,31 @@
+name: Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Image tag (example: sha-b83fc57)"
+        required: true
+        type: string
+
+jobs:
+  rollback:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate .env
+        run: |
+          chmod +x scripts/generate-env.sh
+          ./scripts/generate-env.sh
+
+
+      - name: Set Image Tag
+        run: |
+          echo "IMAGE_TAG=${{ github.event.inputs.image_tag }}" >> $GITHUB_ENV
+
+      - name: Rollback
+        run: |
+          chmod +x scripts/deploy.sh
+          ./scripts/deploy.sh
