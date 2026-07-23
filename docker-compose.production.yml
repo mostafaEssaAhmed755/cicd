@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
-      - ./src/.env:/var/www/html/.env:ro
+      - ./.env:/var/www/html/.env:ro
     depends_on:
       mysql:
         condition: service_healthy
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
-      - ./src/.env:/var/www/html/.env:ro
+      - ./.env:/var/www/html/.env:ro
     command: php artisan queue:work
     depends_on:
       app:
@@ -34,7 +34,7 @@ services:
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
-      - ./src/.env:/var/www/html/.env:ro
+      - ./.env:/var/www/html/.env:ro
     command: php artisan schedule:work
     depends_on:
       app:

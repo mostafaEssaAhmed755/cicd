@@ -17,7 +17,8 @@ jobs:
 
       - name: Generate .env
         run: |
-          chmod +x scripts/generate-env.sh
+          chmod +x /opt/cicd/scripts/generate-env.sh
+          cd /opt/cicd
           ./scripts/generate-env.sh
 
 
@@ -27,5 +28,6 @@ jobs:
 
       - name: Rollback
         run: |
-          chmod +x scripts/deploy.sh
+          chmod +x /opt/cicd/scripts/deploy.sh
+          cd /opt/cicd
           ./scripts/deploy.sh

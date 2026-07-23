@@ -2,9 +2,7 @@
 
 set -e
 
-cd src
-
-cat > .env <<EOF
+cat > /opt/cicd/.env <<EOF
 APP_NAME=${APP_NAME}
 APP_ENV=${APP_ENV}
 APP_KEY=${APP_KEY}

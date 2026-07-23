@@ -14,78 +14,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Prepare Server
+        run: |
+          mkdir -p /opt/cicd
+
+          rsync -av --delete docker-compose.production.yml /opt/cicd/
+          rsync -av --delete docker/ /opt/cicd/docker/
+          rsync -av --delete scripts/ /opt/cicd/scripts/
+
+          chmod +x /opt/cicd/scripts/*.sh
+
       - name: Generate .env
         run: |
-          cd src
-
-          cat > .env <<EOF
-          APP_NAME=${{ secrets.APP_NAME }}
-          APP_ENV=${{ secrets.APP_ENV }}
-          APP_KEY=${{ secrets.APP_KEY }}
-          APP_DEBUG=${{ secrets.APP_DEBUG }}
-          APP_URL=${{ secrets.APP_URL }}
-
-          APP_LOCALE=${{ secrets.APP_LOCALE }}
-          APP_FALLBACK_LOCALE=${{ secrets.APP_FALLBACK_LOCALE }}
-          APP_FAKER_LOCALE=${{ secrets.APP_FAKER_LOCALE }}
-
-          APP_MAINTENANCE_DRIVER=${{ secrets.APP_MAINTENANCE_DRIVER }}
-
-          BCRYPT_ROUNDS=${{ secrets.BCRYPT_ROUNDS }}
-
-          LOG_CHANNEL=${{ secrets.LOG_CHANNEL }}
-          LOG_STACK=${{ secrets.LOG_STACK }}
-          LOG_DEPRECATIONS_CHANNEL=${{ secrets.LOG_DEPRECATIONS_CHANNEL }}
-          LOG_LEVEL=${{ secrets.LOG_LEVEL }}
-
-          DB_CONNECTION=${{ secrets.DB_CONNECTION }}
-          DB_HOST=${{ secrets.DB_HOST }}
-          DB_PORT=${{ secrets.DB_PORT }}
-          DB_DATABASE=${{ secrets.DB_DATABASE }}
-          DB_USERNAME=${{ secrets.DB_USERNAME }}
-          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-
-          SESSION_DRIVER=${{ secrets.SESSION_DRIVER }}
-          SESSION_LIFETIME=${{ secrets.SESSION_LIFETIME }}
-          SESSION_ENCRYPT=${{ secrets.SESSION_ENCRYPT }}
-          SESSION_PATH=${{ secrets.SESSION_PATH }}
-          SESSION_DOMAIN=${{ secrets.SESSION_DOMAIN }}
-
-          BROADCAST_CONNECTION=${{ secrets.BROADCAST_CONNECTION }}
-          FILESYSTEM_DISK=${{ secrets.FILESYSTEM_DISK }}
-          QUEUE_CONNECTION=${{ secrets.QUEUE_CONNECTION }}
-
-          CACHE_STORE=${{ secrets.CACHE_STORE }}
-
-          MEMCACHED_HOST=${{ secrets.MEMCACHED_HOST }}
-
-          REDIS_CLIENT=${{ secrets.REDIS_CLIENT }}
-          REDIS_HOST=${{ secrets.REDIS_HOST }}
-          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-          REDIS_PORT=${{ secrets.REDIS_PORT }}
-
-          MAIL_MAILER=${{ secrets.MAIL_MAILER }}
-          MAIL_SCHEME=${{ secrets.MAIL_SCHEME }}
-          MAIL_HOST=${{ secrets.MAIL_HOST }}
-          MAIL_PORT=${{ secrets.MAIL_PORT }}
-          MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
-          MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
-          MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}
-          MAIL_FROM_NAME=${{ secrets.MAIL_FROM_NAME }}
-
-          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
-          AWS_BUCKET=${{ secrets.AWS_BUCKET }}
-          AWS_USE_PATH_STYLE_ENDPOINT=${{ secrets.AWS_USE_PATH_STYLE_ENDPOINT }}
-
-          VITE_APP_NAME=${{ secrets.VITE_APP_NAME }}
-          EOF
+          /opt/cicd/scripts/generate-env.sh
 
       - name: Set image tag
         run: echo "IMAGE_TAG=sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Deploy
         run: |
-          chmod +x scripts/deploy.sh
-          ./scripts/deploy.sh
+          /opt/cicd/scripts/deploy.sh
